@@ -24,5 +24,13 @@
         ]
       }
     }
+  },
+  "storage": {
+    "ece1779a321cb749b": {
+      "service": "S3",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

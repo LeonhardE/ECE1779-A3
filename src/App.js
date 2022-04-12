@@ -1,17 +1,18 @@
-import { Amplify } from 'aws-amplify';
-import Mainpage from './Component/Mainpage';
-
-// import { withAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
-
-import awsExports from './aws-exports';
-Amplify.configure(awsExports);
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePage from './Component/HomePage';
+import Profile from './Component/Profile'
+import Create from './Component/Create'
 
 function App() {
   return (
-    <>
-      <Mainpage />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/create" element={<Create />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

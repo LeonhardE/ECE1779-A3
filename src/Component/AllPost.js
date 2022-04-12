@@ -61,10 +61,7 @@ export default function AllPost() {
                     >
                     <CardMedia
                         component="img"
-                        sx={{
-                        // 16:9
-                        pt: '56.25%',
-                        }}
+                        height="300"
                         image="https://source.unsplash.com/random"
                         alt="random"
                     />
