@@ -37,7 +37,7 @@ function UploadPost({ user }) {
       }, [selectedImage]);
 
     const handleSubmit = async () => {
-        console.log(selectedImage);
+        // console.log(selectedImage);
         if (postdata.title === "" || postdata.description === "" || selectedImage === null) {
             alert("All fields required. Please check your input.")
         }
