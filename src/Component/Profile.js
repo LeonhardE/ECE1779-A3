@@ -11,12 +11,16 @@ import '@aws-amplify/ui-react/styles.css';
 import awsExports from '../aws-exports';
 Amplify.configure(awsExports);
 
-const theme = createTheme();
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
 function Profile() {
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <TopBar />
       <main>

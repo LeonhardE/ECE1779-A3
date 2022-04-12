@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@media (prefers-color-scheme: dark) {
+  [data-amplify-color-mode='system'] {
+    --amplify-colors-background-primary: black;
+  }
+}
+
+[data-amplify-authenticator] {
+  --amplify-colors-background-primary: black;
+}

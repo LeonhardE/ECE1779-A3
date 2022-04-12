@@ -11,13 +11,17 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-const theme = createTheme()
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 export default function AllPost() {
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={darkTheme}>
             <Box
             sx={{
                 bgcolor: 'background.paper',

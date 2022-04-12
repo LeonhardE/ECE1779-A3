@@ -19,7 +19,12 @@ Storage.configure({
     }
 })
 
-const theme = createTheme()
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
+
 const Input = styled('input')({
     display: 'none',
   });
@@ -52,7 +57,7 @@ function UploadPost({ user }) {
     }
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={darkTheme}>
             <Box
             sx={{
                 bgcolor: 'background.paper',

@@ -12,12 +12,16 @@ import '@aws-amplify/ui-react/styles.css';
 import awsExports from '../aws-exports';
 Amplify.configure(awsExports);
 
-const theme = createTheme()
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
 
 function UserInfo({ user }) {
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={darkTheme}>
             <Box
             sx={{
                 bgcolor: 'background.paper',
