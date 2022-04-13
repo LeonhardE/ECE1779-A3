@@ -3,16 +3,16 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import TopBar from './TopBar';
 import Footer from './Footer';
-import UploadPost from './UploadPost';
+import UserPost from './UserPost';
 import { Amplify } from 'aws-amplify';
-import { darkTheme } from './Util'
+import { darkTheme} from './Util'
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from '../aws-exports';
 Amplify.configure(awsExports);
 
-function HomePage() {
+function Manage() {
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -20,7 +20,7 @@ function HomePage() {
       <TopBar />
       <main>
         {/* Content */}
-        <UploadPost />
+        <UserPost />
       </main>
       {/* Footer */}
       <Footer />
@@ -29,4 +29,4 @@ function HomePage() {
   );
 }
 
-export default withAuthenticator(HomePage);
+export default withAuthenticator(Manage);

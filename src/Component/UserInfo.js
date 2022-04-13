@@ -3,21 +3,14 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import { ThemeProvider } from '@mui/material/styles';
+import { darkTheme } from './Util'
 import { Amplify } from 'aws-amplify';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import awsExports from '../aws-exports';
 Amplify.configure(awsExports);
-
-const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
-
 
 function UserInfo({ user }) {
     return (

@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
-import { Storage, Amplify } from 'aws-amplify';
+import { Storage, Amplify, API, graphqlOperation } from 'aws-amplify';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { ThemeProvider} from '@mui/material/styles';
+import { darkTheme, Input } from './Util'
+import { createPostdata } from '../graphql/mutations';
 
 import awsExports from '../aws-exports';
 Amplify.configure(awsExports);
@@ -18,16 +19,6 @@ Storage.configure({
         public: 'images/'
     }
 })
-
-const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-    },
-  });
-
-const Input = styled('input')({
-    display: 'none',
-  });
 
 function UploadPost({ user }) {
     const [postdata, setPostdata] = useState({"username": user.username, "title": "", "description": ""});
@@ -42,16 +33,22 @@ function UploadPost({ user }) {
       }, [selectedImage]);
 
     const handleSubmit = async () => {
-        // console.log(selectedImage);
+        // create unique key for post
+        let time = new Date();
+        let key = time.getTime().toString() + user.username;
+        console.log(key)
         if (postdata.title === "" || postdata.description === "" || selectedImage === null) {
             alert("All fields required. Please check your input.")
         }
         else {
-            const storageResult = await Storage.put(selectedImage.name, selectedImage, {
+            const storageResult = await Storage.put(key, selectedImage, {
                 level: 'public',
                 type: 'image/*'
             })
             console.log(storageResult)
+            const newpostdata = { key: key, title: postdata.title, description: postdata.description, creator: user.username, like: 0 }
+            const graphResult = await API.graphql(graphqlOperation(createPostdata, {input: newpostdata}));
+            console.log(graphResult);
             setUploaded(true)
         }
     }
@@ -105,7 +102,7 @@ function UploadPost({ user }) {
                             Select Image
                         </Button>
                     </label>
-                    <Button variant="contained" onClick={handleSubmit}>Upload</Button>
+                    <Button variant="contained" onClick={handleSubmit} disabled={uploaded}>Upload</Button>
                 </Stack>
             </Container>
             </Box>

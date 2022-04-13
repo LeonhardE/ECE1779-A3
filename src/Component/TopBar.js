@@ -67,6 +67,7 @@ function TopBar({ signOut, user }) {
             </Button>
             <Button
               sx={{ my: 2, color: 'white', display: 'block' }}
+              href="/manage"
             >
               Manage
             </Button>
