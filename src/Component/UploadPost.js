@@ -14,11 +14,6 @@ import { createPostdata } from '../graphql/mutations';
 
 import awsExports from '../aws-exports';
 Amplify.configure(awsExports);
-Storage.configure({
-    customPrefix: {
-        public: 'images/'
-    }
-})
 
 function UploadPost({ user }) {
     const [postdata, setPostdata] = useState({"username": user.username, "title": "", "description": ""});
@@ -41,7 +36,7 @@ function UploadPost({ user }) {
             alert("All fields required. Please check your input.")
         }
         else {
-            const storageResult = await Storage.put(key, selectedImage, {
+            const storageResult = await Storage.put("images/" + key, selectedImage, {
                 level: 'public',
                 type: 'image/*'
             })

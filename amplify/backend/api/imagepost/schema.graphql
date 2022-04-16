@@ -14,3 +14,24 @@ type postdata @model
   creator: String!
   like: Int!
 }
+
+type postlike @model 
+  @auth(rules: [
+    { allow: owner },
+    { allow: private, operations: [read] },
+    { allow: public, operations: [read] }
+  ]) {
+  key: ID!
+  sender: String!
+}
+
+type postcomment @model 
+  @auth(rules: [
+    { allow: owner },
+    { allow: private, operations: [read] },
+    { allow: public, operations: [read] }
+  ]) {
+  key: ID!
+  content: String!
+  sender: String!
+}

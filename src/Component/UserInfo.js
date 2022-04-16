@@ -39,13 +39,7 @@ function UserInfo({ user }) {
                 <Typography variant="body1" color="text.secondary" gutterBottom >
                 Verified: {user.attributes.email_verified.toString()}
                 </Typography>
-                <Stack
-                sx={{ pt: 4 }}
-                direction="row"
-                spacing={2}
-                justifyContent="center"
-                >
-                </Stack>
+                
             </Container>
             </Box>
             <Container sx={{ py: 8 }} maxWidth="md">

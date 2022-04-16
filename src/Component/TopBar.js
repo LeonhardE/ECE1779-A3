@@ -9,10 +9,11 @@ import Menu from '@mui/material/Menu';
 import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
+import { blue } from '@mui/material/colors';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import CameraIcon from '@mui/icons-material/PhotoCamera';
+import CameraIcon from '@mui/icons-material/Camera';
 import { Amplify } from 'aws-amplify';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
@@ -73,6 +74,7 @@ function TopBar({ signOut, user }) {
             </Button>
             <Button
               sx={{ my: 2, color: 'white', display: 'block' }}
+              href="/trend"
             >
               Trend
             </Button>
@@ -81,7 +83,9 @@ function TopBar({ signOut, user }) {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title={user.username}>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar />
+                <Avatar sx={{ bgcolor: blue[300] }}>
+                  {user.username[0].toUpperCase()}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
