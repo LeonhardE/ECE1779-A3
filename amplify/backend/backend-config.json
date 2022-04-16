@@ -31,12 +31,6 @@
       "serviceType": "imported",
       "providerPlugin": "awscloudformation",
       "dependsOn": []
-    },
-    "image": {
-      "service": "DynamoDB",
-      "serviceType": "imported",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": []
     }
   },
   "api": {

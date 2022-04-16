@@ -19,13 +19,6 @@
         "ece1779a321cb749b": {
           "bucketName": "ece1779a3data",
           "region": "us-east-1"
-        },
-        "image": {
-          "tableName": "image",
-          "region": "us-east-1",
-          "arn": "arn:aws:dynamodb:us-east-1:689329276323:table/image",
-          "partitionKeyName": "image_id",
-          "partitionKeyType": "S"
         }
       }
     }
