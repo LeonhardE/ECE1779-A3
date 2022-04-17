@@ -311,11 +311,13 @@ function UserPost({ user }) {
                         <Typography>
                         {post.description}
                         </Typography>
-                        <Stack direction="row" spacing={1}>
-                            <Chip label={post.label[0]} size="small" variant="outlined" />
-                            <Chip label={post.label[1]} size="small" variant="outlined" />
-                            <Chip label={post.label[2]} size="small" variant="outlined" />
-                        </Stack>
+                        {post.label && (
+                            <Stack direction="row" spacing={1}>
+                                <Chip label={post.label[0]} size="small" variant="outlined" />
+                                <Chip label={post.label[1]} size="small" variant="outlined" />
+                                <Chip label={post.label[2]} size="small" variant="outlined" />
+                            </Stack>
+                        )}
                         <Typography color="text.secondary">
                             {post.like} likes
                         </Typography>

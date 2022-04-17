@@ -109,6 +109,16 @@ function AllPost({ user }) {
             const likeresult = await API.graphql(graphqlOperation(deletePostlike, {input: likedata}));
             console.log(likeresult)
         }
+        const likeresult = await API.graphql(graphqlOperation(listPostlikes));
+        let returnlikes = likeresult.data.listPostlikes.items;
+        let likedetails = [];
+        for (let i = 0; i < returnlikes.length; i++) {
+            if (returnlikes[i]._deleted) {
+                continue;
+            }
+            likedetails.push(returnlikes[i]);
+        }
+        setAlllikes(likedetails);
         setLiked(newliked);
     }
 
@@ -286,11 +296,13 @@ function AllPost({ user }) {
                             <Typography>
                             {post.description}
                             </Typography>
-                            <Stack direction="row" spacing={1}>
-                                <Chip label={post.label[0]} size="small" variant="outlined" />
-                                <Chip label={post.label[1]} size="small" variant="outlined" />
-                                <Chip label={post.label[2]} size="small" variant="outlined" />
-                            </Stack>
+                            {post.label && (
+                                <Stack direction="row" spacing={1}>
+                                    <Chip label={post.label[0]} size="small" variant="outlined" />
+                                    <Chip label={post.label[1]} size="small" variant="outlined" />
+                                    <Chip label={post.label[2]} size="small" variant="outlined" />
+                                </Stack>
+                            )}
                             <Typography color="text.secondary" onClick={ () => {
                                 // alert("test");
                             }}>
