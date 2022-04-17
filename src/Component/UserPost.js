@@ -354,7 +354,7 @@ function UserPost({ user }) {
                     open={openimage[map[post.key]]}
                     onClick={handleImageClose}
                     >
-                        <img src={post.image} alt="fullimage" width="700" />
+                        <img src={post.image} alt="fullimage" style={{ "maxHeight": 650, "maxWidth": 650 }} />
                     </Backdrop>
                     <CardContent sx={{ flexGrow: 1 }}>
                         <Typography gutterBottom variant="h5" component="h2">

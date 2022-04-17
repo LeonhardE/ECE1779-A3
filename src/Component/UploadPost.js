@@ -13,6 +13,7 @@ import { darkTheme, Input } from './Util'
 import { createPostdata } from '../graphql/mutations';
 
 import awsExports from '../aws-exports';
+import { useNavigate } from 'react-router-dom';
 Amplify.configure(awsExports);
 
 function UploadPost({ user }) {
@@ -20,6 +21,7 @@ function UploadPost({ user }) {
     const [selectedImage, setSelectedImage] = useState(null);
     const [imageUrl, setImageUrl] = useState(null);
     const [uploaded, setUploaded] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (selectedImage) {
@@ -31,6 +33,10 @@ function UploadPost({ user }) {
             }
         }
       }, [selectedImage]);
+
+    const sleep = (milliseconds) => {
+      return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
 
     const handleSubmit = async () => {
         if (postdata.title === "" || postdata.description === "" || selectedImage === null) {
@@ -51,6 +57,8 @@ function UploadPost({ user }) {
             const graphResult = await API.graphql(graphqlOperation(createPostdata, {input: newpostdata}));
             console.log(graphResult);
             alert("Success!");
+            await sleep(1500);
+            navigate("/");
         }
     }
 
