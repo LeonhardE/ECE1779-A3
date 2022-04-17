@@ -179,14 +179,15 @@ function AllPost({ user }) {
             let mapcount = {};
             let mapdeleted = {};
             let image = null;
-            // let label = null;
+            let label = null;
             for (let i = 0; i < returnposts.length; i++) {
                 if (returnposts[i]._deleted) {
                     continue;
                 }
-                image = await Storage.get("images/" + returnposts[i].key)
-                // label = await axios.get(getlabelurl + returnposts[i].key, getlabelheader);
-                // console.log(label)
+                image = await Storage.get("images/" + returnposts[i].key);
+                label = await axios.get(getlabelurl + returnposts[i].key, getlabelheader);
+                console.log(label.data.Labels);
+                returnposts[i].label = label.data.Labels;
                 returnposts[i].image = image;
                 returnposts[i].createdAt = fixtime(returnposts[i].createdAt);
                 openlist.push(false);
@@ -203,6 +204,7 @@ function AllPost({ user }) {
                     mapdeleted[comments[i][j].id] = false;
                 }
             }
+            console.log(posts[0].label[0])
             setAlllikes(likedetails);
             setAllposts(posts);
             setOpen(openlist);
@@ -282,11 +284,11 @@ function AllPost({ user }) {
                         <Typography>
                         {post.description}
                         </Typography>
-                        {/* <Stack direction="row" spacing={1}>
-                            <Chip label="Bird" size="small" variant="outlined" />
-                            <Chip label="Nature" size="small" variant="outlined" />
-                            <Chip label="Outdoors" size="small" variant="outlined" />
-                        </Stack> */}
+                        <Stack direction="row" spacing={1}>
+                            <Chip label={post.label[0]} size="small" variant="outlined" />
+                            <Chip label={post.label[1]} size="small" variant="outlined" />
+                            <Chip label={post.label[2]} size="small" variant="outlined" />
+                        </Stack>
                         <Typography color="text.secondary">
                             {post.like} likes
                         </Typography>
