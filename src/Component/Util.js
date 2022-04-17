@@ -101,6 +101,7 @@ export function getlike(likelist, key) {
             list.push(likelist[i]);
         }
     }
+    list.sort(ondate);
     return list;
 }
 
