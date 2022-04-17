@@ -242,19 +242,21 @@ function UserPost({ user }) {
         console.log(imageresult);
         // delete like
         for (let i = 0; i < alllikes.length; i++) {
-            if (alllikes[i].key === key) {
+            if (alllikes[i].key === key && alllikes[i].sender === user) {
                 let likeresult = await API.graphql(graphqlOperation(deletePostlike, { input: { id: alllikes[i].id, _version: alllikes[i]._version} }));
                 console.log(likeresult);
             }
         }
         // delete comment
         for (let i = 0; i < commentlist[map[key]].length; i++) {
-            let commentresult = await API.graphql(graphqlOperation(deletePostcomment, { input: { id: commentlist[map[key]][i].id, _version: commentlist[map[key]][i]._version } }));
-            console.log(commentresult);
+            if (commentlist[map[key]][i].sender === user.username) {
+                let commentresult = await API.graphql(graphqlOperation(deletePostcomment, { input: { id: commentlist[map[key]][i].id, _version: commentlist[map[key]][i]._version } }));
+                console.log(commentresult);
+            }
         }
         // delete image db
-        // let label = await axios.delete(getlabelurl + key, getlabelheader);
-        // console.log(label);
+        let label = await axios.delete(getlabelurl + key, getlabelheader);
+        console.log(label);
         alert("Delete Success");
         setChange(change + 1)
     }
