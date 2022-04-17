@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
+import CardActionArea from '@mui/material/CardActionArea';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Avatar from '@mui/material/Avatar';
@@ -28,7 +29,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import { ThemeProvider } from '@mui/material/styles';
-import { darkTheme, ondate, fixtime, checkliked, countlike, getcomments, getlabelurl, getlabelheader, extractLabels } from './Util'
+import { darkTheme, ondate, fixtime, checkliked, countlike, getcomments, getlabelurl, getlabelheader, extractLabels, getlike } from './Util'
 import { Storage, Amplify, API, graphqlOperation } from 'aws-amplify';
 import { createPostlike, deletePostlike, createPostcomment, deletePostcomment } from '../graphql/mutations';
 import { listPostdata, listPostlikes, listPostcomments} from '../graphql/queries';
@@ -50,6 +51,8 @@ function AllPost({ user }) {
     const [allposts, setAllposts] = useState([]);
     const [alllikes, setAlllikes] = useState([]);
     const [open, setOpen] = useState([]);
+    const [openimage, setOpenimage] = useState([]);
+    const [openlike, setOpenlike] = useState([]);
     const [map, setMap] = useState({});
     const [liked, setLiked] = useState([]);
     const [comment, setComment] = useState("");
@@ -74,6 +77,40 @@ function AllPost({ user }) {
             else map[i] = false;
         }
         setOpen(map);
+    };
+
+    const handleImageClose = () => {
+        let map = [];
+        for (let i = 0; i < open.length; i++) {
+            map[i] = false;
+        }
+        setOpenimage(map);
+    };
+
+    const handleImageToggle = (key) => {
+        let map = [];
+        for (let i = 0; i < open.length; i++) {
+            if (i === key) map[i] = true;
+            else map[i] = false;
+        }
+        setOpenimage(map);
+    };
+
+    const handleLikeClose = () => {
+        let map = [];
+        for (let i = 0; i < open.length; i++) {
+            map[i] = false;
+        }
+        setOpenlike(map);
+    };
+
+    const handleLikeToggle = (key) => {
+        let map = [];
+        for (let i = 0; i < open.length; i++) {
+            if (i === key) map[i] = true;
+            else map[i] = false;
+        }
+        setOpenlike(map);
     };
 
     const handleLike = async (key) => {
@@ -222,6 +259,8 @@ function AllPost({ user }) {
             setAlllikes(likedetails);
             setAllposts(posts);
             setOpen(openlist);
+            setOpenimage(openlist);
+            setOpenlike(openlist);
             setMap(mapcount);
             setLiked(likelist);
             setCommentlist(comments);
@@ -286,13 +325,21 @@ function AllPost({ user }) {
                             title={post.creator}
                             subheader={post.createdAt.substring(0, 10) + " " + post.createdAt.substring(11, 19)}
                         />
-                        <CardMedia
-                            component="img"
-                            height="300"
-                            image={post.image}
-                            alt="random"
-                            // onClick={ () => handleToggle(map[post.key]) }
-                        />
+                        <CardActionArea onClick={ () => handleImageToggle(map[post.key]) }>
+                            <CardMedia
+                                component="img"
+                                height="300"
+                                image={post.image}
+                                alt="random"
+                            />
+                        </CardActionArea>
+                        <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={openimage[map[post.key]]}
+                        onClick={handleImageClose}
+                        >
+                            <img src={post.image} alt="fullimage" width="700" />
+                        </Backdrop>
                         <CardContent sx={{ flexGrow: 1 }}>
                             <Typography gutterBottom variant="h5" component="h2">
                             {post.title} 
@@ -307,14 +354,48 @@ function AllPost({ user }) {
                                     <Chip label={post.label[2]} size="small" variant="outlined" />
                                 </Stack>
                             )}
-                            <Typography color="text.secondary" onClick={ () => {
-                                // alert("test");
-                            }}>
-                                {post.like} likes 
-                            </Typography>
-                            <Typography color="text.secondary">
-                                {commentlist[map[post.key]].length} comments
-                            </Typography>
+                            <CardActionArea onClick={ () => handleLikeToggle(map[post.key]) }>
+                                <Typography color="text.secondary">
+                                    {post.like} likes 
+                                </Typography>
+                            </CardActionArea>
+                            <Backdrop
+                            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                            open={openlike[map[post.key]]}
+                            onClick={handleLikeClose}
+                            >
+                                <List sx={{ width: '100%', maxWidth: 400, bgcolor: 'background.paper' }}>
+                                    <ListItem alignItems="flex-start">
+                                        <Typography>Likes</Typography>
+                                    </ListItem>
+                                    <Divider variant="inset" component="li" />
+                                    {getlike(alllikes, post.key).map((like) => (
+                                        <ListItem 
+                                            key={like.sender}
+                                            alignItems="flex-start"
+                                        >
+                                            <ListItemAvatar>
+                                            <Avatar sx={{ bgcolor: blue[300] }} aria-label="recipe">
+                                                {like.sender[0].toUpperCase()}
+                                            </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                            primary={like.sender}
+                                            secondary={
+                                                <React.Fragment>
+                                                {like.createdAt ? fixtime(like.createdAt).substring(0, 10) + " " + fixtime(like.createdAt).substring(11, 19) : ""}
+                                                </React.Fragment>
+                                            }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Backdrop>
+                            <CardActionArea onClick={ () => handleToggle(map[post.key]) }>
+                                <Typography color="text.secondary">
+                                    {commentlist[map[post.key]].length} comments
+                                </Typography>
+                            </CardActionArea>
                         </CardContent>    
                         <CardActions>
                             <IconButton aria-label="add to favorites" onClick={ () => handleLike(post.key) } color={liked[map[post.key]] === true ? "error" : "default"}>
@@ -329,7 +410,7 @@ function AllPost({ user }) {
                             >
                                 <List sx={{ width: '100%', maxWidth: 550, bgcolor: 'background.paper' }}>
                                     <ListItem alignItems="flex-start">
-                                        <Button onClick={ () => handleClose() }>Return</Button>
+                                        <Button onClick={ () => handleClose() }>Back</Button>
                                     </ListItem>
                                     <Divider variant="inset" component="li" />
                                     <ListItem 

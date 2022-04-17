@@ -94,6 +94,16 @@ export function countlike(likelist, key) {
     return count;
 }
 
+export function getlike(likelist, key) {
+    let list = [];
+    for (let i = 0; i < likelist.length; i++) {
+        if (likelist[i].key === key) {
+            list.push(likelist[i]);
+        }
+    }
+    return list;
+}
+
 export function getcomments(list, key) {
     let comments = [];
     for (let i = 0; i < list.length; i++) {
