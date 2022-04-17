@@ -51,6 +51,7 @@ function UserPost({ user }) {
     const [commentdeleted, setCommentdeleted] = useState({});
     const [change, setChange] = useState(0);
     const [unfinish, setUnfinish] = useState(true);
+    const [postdeleted, setPostdeleted] = useState({});
 
     const handleClose = () => {
         let map = [];
@@ -179,6 +180,7 @@ function UserPost({ user }) {
             let comments = [];
             let mapcount = {};
             let mapdeleted = {};
+            let mappostdeleted = {};
             let image = null;
             let label = null;
             for (let i = 0; i < returnposts.length; i++) {
@@ -198,6 +200,7 @@ function UserPost({ user }) {
             posts.reverse();
             for (let i = 0; i < posts.length; i++) {
                 mapcount[posts[i].key] = i;
+                mappostdeleted[posts[i].key] = false;
                 posts[i].like = countlike(likedetails, posts[i].key);
                 likelist.push(checkliked(likedetails, posts[i].key, user.username));
                 comments.push(getcomments(commentdetails, posts[i].key));
@@ -213,6 +216,7 @@ function UserPost({ user }) {
             setCommentlist(comments);
             setCommentdeleted(mapdeleted);
             setUnfinish(false);
+            setPostdeleted(mappostdeleted);
         }
         
         listposts().catch(console.error);
@@ -220,6 +224,12 @@ function UserPost({ user }) {
     }, [user.username, change]);
 
     const handleDeletePost = async (id, version, key) => {
+        let newpostdeleted = {};
+        for (let i = 0; i < userPosts.length; i++) {
+            newpostdeleted[userPosts[i].key] = postdeleted[userPosts[i].key];
+        }
+        newpostdeleted[key] = true;
+        setPostdeleted(newpostdeleted);
         // delete postdata
         console.log(id)
         console.log(version)
@@ -378,7 +388,7 @@ function UserPost({ user }) {
                                 ))}
                             </List>
                         </Backdrop>
-                        <Button size="small" onClick={ () => handleDeletePost(post.id, post._version, post.key) }>Delete</Button>
+                        <Button size="small" onClick={ () => handleDeletePost(post.id, post._version, post.key) } color="error" disabled={postdeleted[post.key]} >Delete</Button>
                     </CardActions>
                     </Card>
                 </Grid>
