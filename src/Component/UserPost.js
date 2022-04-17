@@ -52,6 +52,7 @@ function UserPost({ user }) {
     const [change, setChange] = useState(0);
     const [unfinish, setUnfinish] = useState(true);
     const [postdeleted, setPostdeleted] = useState({});
+    // const [submited, setSubmited] = useState({})
 
     const handleClose = () => {
         let map = [];
@@ -127,13 +128,6 @@ function UserPost({ user }) {
     }
 
     const handleDelete = async (id, version) => {
-        const commentdata = { 
-            id: id, 
-            _version: version
-        }
-        const commentresult = await API.graphql(graphqlOperation(deletePostcomment, {input: commentdata}));
-        console.log(commentresult);
-        alert("Comment deleted")
         let newdeleted = {};
         for (let i = 0; i < commentlist.length; i++) {
             for (let j = 0; j < commentlist[i].length; j++) {
@@ -144,6 +138,13 @@ function UserPost({ user }) {
         }
         newdeleted[id] = true;
         setCommentdeleted(newdeleted);
+        const commentdata = { 
+            id: id, 
+            _version: version
+        }
+        const commentresult = await API.graphql(graphqlOperation(deletePostcomment, {input: commentdata}));
+        console.log(commentresult);
+        alert("Comment deleted")
         setChange(change + 1);
     }
 
@@ -318,6 +319,9 @@ function UserPost({ user }) {
                         <Typography color="text.secondary">
                             {post.like} likes
                         </Typography>
+                        <Typography color="text.secondary">
+                            {commentlist[map[post.key]].length} comments
+                        </Typography>
                     </CardContent>
                     <CardActions>
                         <IconButton aria-label="add to favorites" onClick={ () => handleLike(post.key) } color={liked[map[post.key]] === true ? "error" : "default"}>
@@ -338,7 +342,10 @@ function UserPost({ user }) {
                                 <ListItem 
                                     alignItems="flex-start"
                                     secondaryAction={
-                                        <IconButton onClick={ () => handleSubmit(post.key) }>
+                                        <IconButton 
+                                            onClick={ () => handleSubmit(post.key) }
+                                            // disabled={submited[post.key]}
+                                        >
                                             <SendIcon />
                                         </IconButton>
                                     }

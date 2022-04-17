@@ -291,8 +291,13 @@ function AllPost({ user }) {
                                 <Chip label={post.label[1]} size="small" variant="outlined" />
                                 <Chip label={post.label[2]} size="small" variant="outlined" />
                             </Stack>
+                            <Typography color="text.secondary" onClick={ () => {
+                                // alert("test");
+                            }}>
+                                {post.like} likes 
+                            </Typography>
                             <Typography color="text.secondary">
-                                {post.like} likes
+                                {commentlist[map[post.key]].length} comments
                             </Typography>
                         </CardContent>    
                         <CardActions>
@@ -300,7 +305,7 @@ function AllPost({ user }) {
                                 <FavoriteIcon />
                             </IconButton>
                             <IconButton aria-label="comment" onClick={ () => handleToggle(map[post.key]) }>
-                                <CommentIcon />
+                                <CommentIcon /> 
                             </IconButton>
                             <Backdrop
                                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
