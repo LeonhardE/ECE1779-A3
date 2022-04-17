@@ -91,7 +91,7 @@ export default function Trendlist() {
                         <TableHead>
                         <TableRow>
                             <TableCell>Topic</TableCell>
-                            <TableCell>Frequence</TableCell>
+                            <TableCell>Frequency</TableCell>
                         </TableRow>
                         </TableHead>
                         <TableBody>
