@@ -28,7 +28,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import { ThemeProvider } from '@mui/material/styles';
-import { darkTheme, ondate, fixtime, checkliked, countlike, getcomments, getlabelurl, getlabelheader } from './Util'
+import { darkTheme, ondate, fixtime, checkliked, countlike, getcomments, getlabelurl, getlabelheader, extractLabels } from './Util'
 import { Storage, Amplify, API, graphqlOperation } from 'aws-amplify';
 import { createPostlike, deletePostlike, createPostcomment, deletePostcomment } from '../graphql/mutations';
 import { listPostdata, listPostlikes, listPostcomments} from '../graphql/queries';
@@ -191,15 +191,18 @@ function AllPost({ user }) {
             let mapcount = {};
             let mapdeleted = {};
             let image = null;
-            let label = null;
+            let label = {};
+            const labelresponse = await axios.get(getlabelurl, getlabelheader);
+            for (let i = 0; i < labelresponse.data.length; i++) {
+                label[labelresponse.data[i].image_id] = extractLabels(labelresponse.data[i].json);
+            }
+            console.log(label)
             for (let i = 0; i < returnposts.length; i++) {
                 if (returnposts[i]._deleted) {
                     continue;
                 }
-                image = await Storage.get("images/" + returnposts[i].key);
-                label = await axios.get(getlabelurl + returnposts[i].key, getlabelheader);
-                console.log(label.data.Labels);
-                returnposts[i].label = label.data.Labels;
+                image = await Storage.get("images/" + returnposts[i].key)
+                returnposts[i].label = label["images/" + returnposts[i].key];
                 returnposts[i].image = image;
                 returnposts[i].createdAt = fixtime(returnposts[i].createdAt);
                 openlist.push(false);
@@ -288,6 +291,7 @@ function AllPost({ user }) {
                             height="300"
                             image={post.image}
                             alt="random"
+                            // onClick={ () => handleToggle(map[post.key]) }
                         />
                         <CardContent sx={{ flexGrow: 1 }}>
                             <Typography gutterBottom variant="h5" component="h2">

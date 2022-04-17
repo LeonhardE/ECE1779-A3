@@ -106,11 +106,28 @@ export function getcomments(list, key) {
     return comments;
 }
 
-export const getlabelurl = "https://sc0tz7yiog.execute-api.us-east-1.amazonaws.com/default/dynamoUtil?image_id=images/";
+export const getlabelurl = "https://sc0tz7yiog.execute-api.us-east-1.amazonaws.com/default/dynamoUtil?image_id=ALL";
 
 export const getlabelheader = {
     headers: {
         'x-api-key': "cPiUGpYWTh4ZFC1RCi5jz3VSWR15WJX091WO4DWk"
     }
+}
+
+export function extractLabels(string) {
+    let item = [];
+    let front = -1;
+    for (let i = 0; i < string.length; i++) {
+        if (string[i] === '"') {
+            if (front === -1) {
+                front = i;
+            }
+            else {
+                item.push(string.substring(front + 1, i));
+                front = -1;
+            }
+        }
+    }
+    return item.slice(1, 4);
 }
  

@@ -23,7 +23,12 @@ function UploadPost({ user }) {
 
     useEffect(() => {
         if (selectedImage) {
-          setImageUrl(URL.createObjectURL(selectedImage));
+            if (selectedImage.type.substring(0, 5) !== "image") {
+                alert("Only image file accepted")
+            }
+            else {
+                setImageUrl(URL.createObjectURL(selectedImage));
+            }
         }
       }, [selectedImage]);
 
