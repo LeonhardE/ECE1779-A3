@@ -229,7 +229,7 @@ function AllPost({ user }) {
             let mapdeleted = {};
             let image = null;
             let label = {};
-            const labelresponse = await axios.get(getlabelurl, getlabelheader);
+            const labelresponse = await axios.get(getlabelurl + "ALL", getlabelheader);
             for (let i = 0; i < labelresponse.data.length; i++) {
                 label[labelresponse.data[i].image_id] = extractLabels(labelresponse.data[i].json);
             }

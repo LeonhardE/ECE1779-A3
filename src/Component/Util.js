@@ -116,7 +116,7 @@ export function getcomments(list, key) {
     return comments;
 }
 
-export const getlabelurl = "https://sc0tz7yiog.execute-api.us-east-1.amazonaws.com/default/dynamoUtil?image_id=ALL";
+export const getlabelurl = "https://sc0tz7yiog.execute-api.us-east-1.amazonaws.com/default/dynamoUtil?image_id=";
 
 export const getlabelheader = {
     headers: {

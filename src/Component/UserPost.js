@@ -220,7 +220,7 @@ function UserPost({ user }) {
             let mappostdeleted = {};
             let image = null;
             let label = {};
-            const labelresponse = await axios.get(getlabelurl, getlabelheader);
+            const labelresponse = await axios.get(getlabelurl + "ALL", getlabelheader);
             for (let i = 0; i < labelresponse.data.length; i++) {
                 label[labelresponse.data[i].image_id] = extractLabels(labelresponse.data[i].json);
             }
@@ -296,7 +296,7 @@ function UserPost({ user }) {
             }
         }
         // delete image db
-        let label = await axios.delete(getlabelurl + key, getlabelheader);
+        let label = await axios.delete(getlabelurl + "images/" + key, getlabelheader);
         console.log(label);
         alert("Delete Success");
         setChange(change + 1)
