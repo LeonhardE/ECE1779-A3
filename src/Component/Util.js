@@ -113,7 +113,6 @@ export function getcomments(list, key) {
         }
     }
     comments.sort(ondate);
-    comments.reverse();
     return comments;
 }
 
