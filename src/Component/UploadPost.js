@@ -28,14 +28,15 @@ function UploadPost({ user }) {
       }, [selectedImage]);
 
     const handleSubmit = async () => {
-        // create unique key for post
-        let time = new Date();
-        let key = time.getTime().toString() + user.username;
-        console.log(key)
         if (postdata.title === "" || postdata.description === "" || selectedImage === null) {
             alert("All fields required. Please check your input.")
         }
         else {
+            setUploaded(true);
+            // create unique key for the post
+            let time = new Date();
+            let key = time.getTime().toString() + user.username;
+            console.log(key)
             const storageResult = await Storage.put("images/" + key, selectedImage, {
                 level: 'public',
                 type: 'image/*'
@@ -44,8 +45,7 @@ function UploadPost({ user }) {
             const newpostdata = { key: key, title: postdata.title, description: postdata.description, creator: user.username, like: 0 }
             const graphResult = await API.graphql(graphqlOperation(createPostdata, {input: newpostdata}));
             console.log(graphResult);
-            setUploaded(true)
-            alert("Success!")
+            alert("Success!");
         }
     }
 
