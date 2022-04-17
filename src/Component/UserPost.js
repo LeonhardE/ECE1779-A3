@@ -239,8 +239,8 @@ function UserPost({ user }) {
             console.log(commentresult);
         }
         // delete image db
-        let label = await axios.delete(getlabelurl + key, getlabelheader);
-        console.log(label);
+        // let label = await axios.delete(getlabelurl + key, getlabelheader);
+        // console.log(label);
         alert("Delete Success");
         setChange(change + 1)
     }

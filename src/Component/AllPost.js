@@ -204,7 +204,6 @@ function AllPost({ user }) {
                     mapdeleted[comments[i][j].id] = false;
                 }
             }
-            console.log(posts[0].label[0])
             setAlllikes(likedetails);
             setAllposts(posts);
             setOpen(openlist);
