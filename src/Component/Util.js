@@ -105,4 +105,12 @@ export function getcomments(list, key) {
     comments.reverse();
     return comments;
 }
+
+export const getlabelurl = "https://sc0tz7yiog.execute-api.us-east-1.amazonaws.com/default/dynamoUtil?image_id=images/";
+
+export const getlabelheader = {
+    headers: {
+        'x-api-key': "cPiUGpYWTh4ZFC1RCi5jz3VSWR15WJX091WO4DWk"
+    }
+}
  

@@ -27,12 +27,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import { ThemeProvider } from '@mui/material/styles';
-import { darkTheme, ondate, fixtime, checkliked, countlike, getcomments } from './Util'
+import { darkTheme, ondate, fixtime, checkliked, countlike, getcomments, getlabelurl, getlabelheader } from './Util'
 import { Storage, Amplify, API, graphqlOperation } from 'aws-amplify';
 import { createPostlike, deletePostlike, createPostcomment, deletePostcomment } from '../graphql/mutations';
 import { listPostdata, listPostlikes, listPostcomments} from '../graphql/queries';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
+import axios from 'axios';
 
 import awsExports from '../aws-exports';
 Amplify.configure(awsExports);
@@ -178,11 +179,14 @@ function AllPost({ user }) {
             let mapcount = {};
             let mapdeleted = {};
             let image = null;
+            // let label = null;
             for (let i = 0; i < returnposts.length; i++) {
                 if (returnposts[i]._deleted) {
                     continue;
                 }
                 image = await Storage.get("images/" + returnposts[i].key)
+                // label = await axios.get(getlabelurl + returnposts[i].key, getlabelheader);
+                // console.log(label)
                 returnposts[i].image = image;
                 returnposts[i].createdAt = fixtime(returnposts[i].createdAt);
                 openlist.push(false);
@@ -278,11 +282,11 @@ function AllPost({ user }) {
                         <Typography>
                         {post.description}
                         </Typography>
-                        <Stack direction="row" spacing={1}>
+                        {/* <Stack direction="row" spacing={1}>
                             <Chip label="Bird" size="small" variant="outlined" />
                             <Chip label="Nature" size="small" variant="outlined" />
                             <Chip label="Outdoors" size="small" variant="outlined" />
-                        </Stack>
+                        </Stack> */}
                         <Typography color="text.secondary">
                             {post.like} likes
                         </Typography>
@@ -316,6 +320,7 @@ function AllPost({ user }) {
                                 <Divider variant="inset" component="li" />
                                 {commentlist[map[post.key]].map((comment) => (
                                     <ListItem 
+                                        key={comment.content}
                                         alignItems="flex-start"
                                         secondaryAction={
                                             comment.sender === user.username && comment.id ? 

@@ -289,11 +289,11 @@ function UserPost({ user }) {
                         <Typography>
                         {post.description}
                         </Typography>
-                        <Stack direction="row" spacing={1}>
+                        {/* <Stack direction="row" spacing={1}>
                             <Chip label="Bird" size="small" variant="outlined" />
                             <Chip label="Nature" size="small" variant="outlined" />
                             <Chip label="Outdoors" size="small" variant="outlined" />
-                        </Stack>
+                        </Stack> */}
                         <Typography color="text.secondary">
                             {post.like} likes
                         </Typography>

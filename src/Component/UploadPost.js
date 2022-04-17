@@ -45,6 +45,7 @@ function UploadPost({ user }) {
             const graphResult = await API.graphql(graphqlOperation(createPostdata, {input: newpostdata}));
             console.log(graphResult);
             setUploaded(true)
+            alert("Success!")
         }
     }
 
@@ -66,9 +67,7 @@ function UploadPost({ user }) {
                 >
                 Create a New Post
                 </Typography>
-                {uploaded && (
-                    <Typography variant="h5" color="red" align="center" gutterBottom>Upload Success</Typography>
-                )}
+                
                 <TextField id="title" label="Title" variant="outlined" value={postdata.title} onChange={(e) => setPostdata({...postdata, title: e.target.value})} />
                 <br />
                 <TextField id="description" label="Description" fullWidth variant="outlined" value={postdata.description} onChange={(e) => setPostdata({...postdata, description: e.target.value})} />
