@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -20,6 +21,7 @@ Amplify.configure(awsExports);
 export default function Trendlist() {
 
     const [trendlist, setTrendlist] = useState([]);
+    const [unfinish, setUnfinish] = useState(true);
 
     useEffect(() => {
         const listtrend = async () => {
@@ -58,8 +60,10 @@ export default function Trendlist() {
             }
             
             trends.sort(ontrend);
+            trends.reverse();
             console.log(trends);
             setTrendlist(trends);
+            setUnfinish(false);
         }
         listtrend().catch(console.error);
     }, []);
@@ -81,6 +85,7 @@ export default function Trendlist() {
                 >
                 Trend 
                 </Typography>
+                {unfinish && (<LinearProgress />)}
                 <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                         <TableHead>

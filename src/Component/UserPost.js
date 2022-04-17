@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -49,6 +50,7 @@ function UserPost({ user }) {
     const [commentlist, setCommentlist] = useState([]);
     const [commentdeleted, setCommentdeleted] = useState({});
     const [change, setChange] = useState(0);
+    const [unfinish, setUnfinish] = useState(true);
 
     const handleClose = () => {
         let map = [];
@@ -210,6 +212,7 @@ function UserPost({ user }) {
             setLiked(likelist);
             setCommentlist(comments);
             setCommentdeleted(mapdeleted);
+            setUnfinish(false);
         }
         
         listposts().catch(console.error);
@@ -268,7 +271,7 @@ function UserPost({ user }) {
             </Container>
             </Box>
             <Container sx={{ py: 8 }} maxWidth="md">
-            
+                {unfinish && (<LinearProgress />)}
             <Grid container spacing={4}>
                 {userPosts.map((post) => (
                 <Grid item key={post.key} xs={12} sm={6} md={6}>

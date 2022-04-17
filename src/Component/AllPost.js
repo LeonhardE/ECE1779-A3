@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import LinearProgress from '@mui/material/LinearProgress';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -55,6 +56,7 @@ function AllPost({ user }) {
     const [commentlist, setCommentlist] = useState([]);
     const [commentdeleted, setCommentdeleted] = useState({});
     const [change, setChange] = useState(0);
+    const [unfinish, setUnfinish] = useState(true);
 
     const handleClose = () => {
         let map = [];
@@ -211,6 +213,7 @@ function AllPost({ user }) {
             setLiked(likelist);
             setCommentlist(comments);
             setCommentdeleted(mapdeleted);
+            setUnfinish(false)
         }
         
         listposts().catch(console.error);
@@ -254,119 +257,118 @@ function AllPost({ user }) {
             </Container>
             </Box>
             <Container sx={{ py: 8 }} maxWidth="md">
-            
-            <Grid container spacing={4}>
-                {allposts.map((post) => (
-                <Grid item key={post.key} xs={12} sm={6} md={6}>
-                    <Card
-                    sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
-                    >
-                    <CardHeader
-                        avatar={
-                        <Avatar sx={{ bgcolor: blue[300] }} aria-label="recipe">
-                            {post.creator[0].toUpperCase()}
-                        </Avatar>
-                        }
-                        title={post.creator}
-                        subheader={post.createdAt.substring(0, 10) + " " + post.createdAt.substring(11, 19)}
-                    />
-                    <CardMedia
-                        component="img"
-                        height="300"
-                        image={post.image}
-                        alt="random"
-                    />
-                    <CardContent sx={{ flexGrow: 1 }}>
-                        <Typography gutterBottom variant="h5" component="h2">
-                        {post.title} 
-                        </Typography>
-                        <Typography>
-                        {post.description}
-                        </Typography>
-                        <Stack direction="row" spacing={1}>
-                            <Chip label={post.label[0]} size="small" variant="outlined" />
-                            <Chip label={post.label[1]} size="small" variant="outlined" />
-                            <Chip label={post.label[2]} size="small" variant="outlined" />
-                        </Stack>
-                        <Typography color="text.secondary">
-                            {post.like} likes
-                        </Typography>
-                    </CardContent>    
-                    <CardActions>
-                        <IconButton aria-label="add to favorites" onClick={ () => handleLike(post.key) } color={liked[map[post.key]] === true ? "error" : "default"}>
-                            <FavoriteIcon />
-                        </IconButton>
-                        <IconButton aria-label="comment" onClick={ () => handleToggle(map[post.key]) }>
-                            <CommentIcon />
-                        </IconButton>
-                        <Backdrop
-                            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                            open={open[map[post.key]]}
+                {unfinish && (<LinearProgress />)}
+                <Grid container spacing={4}>
+                    {allposts.map((post) => (
+                    <Grid item key={post.key} xs={12} sm={6} md={6}>
+                        <Card
+                        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
                         >
-                            <List sx={{ width: '100%', maxWidth: 550, bgcolor: 'background.paper' }}>
-                                <ListItem alignItems="flex-start">
-                                    <Button onClick={ () => handleClose() }>Return</Button>
-                                </ListItem>
-                                <Divider variant="inset" component="li" />
-                                <ListItem 
-                                    alignItems="flex-start"
-                                    secondaryAction={
-                                        <IconButton onClick={ () => handleSubmit(post.key) }>
-                                            <SendIcon />
-                                        </IconButton>
-                                    }
-                                >
-                                    <TextField id="comment" label="Add a comment" fullWidth variant="standard" size="small" value={comment} onChange={(e) => setComment(e.target.value)} />   
-                                </ListItem>
-                                <Divider variant="inset" component="li" />
-                                {commentlist[map[post.key]].map((comment) => (
+                        <CardHeader
+                            avatar={
+                            <Avatar sx={{ bgcolor: blue[300] }} aria-label="recipe">
+                                {post.creator[0].toUpperCase()}
+                            </Avatar>
+                            }
+                            title={post.creator}
+                            subheader={post.createdAt.substring(0, 10) + " " + post.createdAt.substring(11, 19)}
+                        />
+                        <CardMedia
+                            component="img"
+                            height="300"
+                            image={post.image}
+                            alt="random"
+                        />
+                        <CardContent sx={{ flexGrow: 1 }}>
+                            <Typography gutterBottom variant="h5" component="h2">
+                            {post.title} 
+                            </Typography>
+                            <Typography>
+                            {post.description}
+                            </Typography>
+                            <Stack direction="row" spacing={1}>
+                                <Chip label={post.label[0]} size="small" variant="outlined" />
+                                <Chip label={post.label[1]} size="small" variant="outlined" />
+                                <Chip label={post.label[2]} size="small" variant="outlined" />
+                            </Stack>
+                            <Typography color="text.secondary">
+                                {post.like} likes
+                            </Typography>
+                        </CardContent>    
+                        <CardActions>
+                            <IconButton aria-label="add to favorites" onClick={ () => handleLike(post.key) } color={liked[map[post.key]] === true ? "error" : "default"}>
+                                <FavoriteIcon />
+                            </IconButton>
+                            <IconButton aria-label="comment" onClick={ () => handleToggle(map[post.key]) }>
+                                <CommentIcon />
+                            </IconButton>
+                            <Backdrop
+                                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                                open={open[map[post.key]]}
+                            >
+                                <List sx={{ width: '100%', maxWidth: 550, bgcolor: 'background.paper' }}>
+                                    <ListItem alignItems="flex-start">
+                                        <Button onClick={ () => handleClose() }>Return</Button>
+                                    </ListItem>
+                                    <Divider variant="inset" component="li" />
                                     <ListItem 
-                                        key={comment.content}
                                         alignItems="flex-start"
                                         secondaryAction={
-                                            comment.sender === user.username && comment.id ? 
-                                                <IconButton 
-                                                    onClick={ () => handleDelete(comment.id, comment._version) } 
-                                                    disabled={commentdeleted[comment.id]}
-                                                >
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            : 
-                                                <Typography></Typography>
+                                            <IconButton onClick={ () => handleSubmit(post.key) }>
+                                                <SendIcon />
+                                            </IconButton>
                                         }
                                     >
-                                        <ListItemAvatar>
-                                        <Avatar sx={{ bgcolor: blue[300] }} aria-label="recipe">
-                                            {comment.sender[0].toUpperCase()}
-                                        </Avatar>
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                        primary={comment.sender}
-                                        secondary={
-                                            <React.Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                {comment.content}
-                                            </Typography>
-                                            <br/>
-                                            {comment.createdAt ? fixtime(comment.createdAt).substring(0, 10) + " " + fixtime(comment.createdAt).substring(11, 19) : ""}
-                                            </React.Fragment>
-                                        }
-                                        />
+                                        <TextField id="comment" label="Add a comment" fullWidth variant="standard" size="small" value={comment} onChange={(e) => setComment(e.target.value)} />   
                                     </ListItem>
-                                ))}
-                            </List>
-                        </Backdrop>
-                    </CardActions>
-                    
-                    </Card>
+                                    <Divider variant="inset" component="li" />
+                                    {commentlist[map[post.key]].map((comment) => (
+                                        <ListItem 
+                                            key={comment.content}
+                                            alignItems="flex-start"
+                                            secondaryAction={
+                                                comment.sender === user.username && comment.id ? 
+                                                    <IconButton 
+                                                        onClick={ () => handleDelete(comment.id, comment._version) } 
+                                                        disabled={commentdeleted[comment.id]}
+                                                    >
+                                                        <DeleteIcon />
+                                                    </IconButton>
+                                                : 
+                                                    <Typography></Typography>
+                                            }
+                                        >
+                                            <ListItemAvatar>
+                                            <Avatar sx={{ bgcolor: blue[300] }} aria-label="recipe">
+                                                {comment.sender[0].toUpperCase()}
+                                            </Avatar>
+                                            </ListItemAvatar>
+                                            <ListItemText
+                                            primary={comment.sender}
+                                            secondary={
+                                                <React.Fragment>
+                                                <Typography
+                                                    sx={{ display: 'inline' }}
+                                                    component="span"
+                                                    variant="body2"
+                                                    color="text.primary"
+                                                >
+                                                    {comment.content}
+                                                </Typography>
+                                                <br/>
+                                                {comment.createdAt ? fixtime(comment.createdAt).substring(0, 10) + " " + fixtime(comment.createdAt).substring(11, 19) : ""}
+                                                </React.Fragment>
+                                            }
+                                            />
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Backdrop>
+                        </CardActions>
+                        </Card>
+                    </Grid>
+                    ))}
                 </Grid>
-                ))}
-            </Grid>
             </Container>
         </ThemeProvider>
     )
