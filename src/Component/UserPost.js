@@ -141,6 +141,16 @@ function UserPost({ user }) {
             const likeresult = await API.graphql(graphqlOperation(deletePostlike, {input: likedata}));
             console.log(likeresult)
         }
+        const likeresult = await API.graphql(graphqlOperation(listPostlikes));
+        let returnlikes = likeresult.data.listPostlikes.items;
+        let likedetails = [];
+        for (let i = 0; i < returnlikes.length; i++) {
+            if (returnlikes[i]._deleted) {
+                continue;
+            }
+            likedetails.push(returnlikes[i]);
+        }
+        setAlllikes(likedetails);
         setLiked(newliked);
     }
 
