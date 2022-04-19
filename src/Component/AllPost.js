@@ -173,7 +173,7 @@ function AllPost({ user }) {
             console.log(commentresult);
             alert("Success!")
             setComment("");
-            commentlist[map[key]].unshift(commentdata);
+            commentlist[map[key]].push(commentdata);
             setChange(change + 1);
         }
     }
